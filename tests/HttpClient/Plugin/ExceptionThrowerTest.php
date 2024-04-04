@@ -61,7 +61,7 @@ class ExceptionThrowerTest extends TestCase
         $expectedExceptionRateLimit = new RateLimit([
             'reset' => $rateLimitReset,
             'remaining' => $rateLimitRemaining,
-            'limit' => $rateLimitLimit
+            'limit' => $rateLimitLimit,
         ]);
 
         self::assertEquals($expectedExceptionRateLimit, $exception->rateLimit);
