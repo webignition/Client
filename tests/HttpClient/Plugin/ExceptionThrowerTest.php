@@ -21,7 +21,6 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Http\Client\Promise\HttpFulfilledPromise;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\RequestInterface;
 
 /**
  * @author Jon Cram <webigntion@gmail.com>
