@@ -21,9 +21,9 @@ use DigitalOceanV2\Entity\RateLimit;
  */
 class ApiLimitExceededException extends RuntimeException
 {
-    public RateLimit $rateLimit;
+    public ?RateLimit $rateLimit;
 
-    public function __construct(string $message, int $code, RateLimit $rateLimit)
+    public function __construct(string $message, int $code, ?RateLimit $rateLimit = null)
     {
         parent::__construct($message, $code);
 
