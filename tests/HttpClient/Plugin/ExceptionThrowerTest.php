@@ -31,9 +31,9 @@ class ExceptionThrowerTest extends TestCase
     {
         $exceptionThrower = new ExceptionThrower();
 
-        $rateLimitReset = rand();
-        $rateLimitRemaining = rand();
-        $rateLimitLimit = rand();
+        $rateLimitReset = \rand();
+        $rateLimitRemaining = \rand();
+        $rateLimitLimit = \rand();
 
         $request = new Request('GET', 'https://example.com/');
         $response = new Response(
