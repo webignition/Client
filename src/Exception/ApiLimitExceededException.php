@@ -14,9 +14,19 @@ declare(strict_types=1);
 
 namespace DigitalOceanV2\Exception;
 
+use DigitalOceanV2\Entity\RateLimit;
+
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 class ApiLimitExceededException extends RuntimeException
 {
+    public RateLimit $rateLimit;
+
+    public function __construct(string $message, int $code, RateLimit $rateLimit)
+    {
+        parent::__construct($message, $code);
+
+        $this->rateLimit = $rateLimit;
+    }
 }

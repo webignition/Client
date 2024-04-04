@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace DigitalOceanV2\HttpClient\Plugin;
 
+use DigitalOceanV2\Entity\RateLimit;
 use DigitalOceanV2\Exception\ApiLimitExceededException;
 use DigitalOceanV2\Exception\ErrorException;
 use DigitalOceanV2\Exception\ExceptionInterface;
@@ -52,7 +53,7 @@ final class ExceptionThrower implements Plugin
             $status = $response->getStatusCode();
 
             if ($status >= 400 && $status < 600) {
-                throw self::createException($status, ResponseMediator::getErrorMessage($response) ?? $response->getReasonPhrase());
+                throw self::createException($response);
             }
 
             return $response;
@@ -62,19 +63,23 @@ final class ExceptionThrower implements Plugin
     /**
      * Create an exception from a status code and error message.
      *
-     * @param int    $status
-     * @param string $message
-     *
      * @return ErrorException|RuntimeException
      */
-    private static function createException(int $status, string $message): ExceptionInterface
+    private static function createException(ResponseInterface $response): ExceptionInterface
     {
+        $status = $response->getStatusCode();
+        $message = ResponseMediator::getErrorMessage($response) ?? $response->getReasonPhrase();
+
         if (400 === $status || 422 === $status) {
             return new ValidationFailedException($message, $status);
         }
 
         if (429 === $status) {
-            return new ApiLimitExceededException($message, $status);
+            return new ApiLimitExceededException(
+                $message,
+                $status,
+                new RateLimit(ResponseMediator::getRateLimit($response))
+            );
         }
 
         if (404 === $status) {
